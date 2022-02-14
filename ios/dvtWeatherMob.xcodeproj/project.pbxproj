@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		00C5E8BA27BAF4CD009D4E25 /* libReactNativeConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C5E8B727BAF42D009D4E25 /* libReactNativeConfig.a */; };
+		00C5E8BF27BB07ED009D4E25 /* dummyGeoFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C5E8BE27BB07ED009D4E25 /* dummyGeoFile.swift */; };
+		00C5E8C327BB0847009D4E25 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C5E8C227BB0847009D4E25 /* MapKit.framework */; };
 		00E356F31AD99517003FC87E /* dvtWeatherMobTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* dvtWeatherMobTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -43,6 +45,9 @@
 
 /* Begin PBXFileReference section */
 		00C5E8B127BAF42D009D4E25 /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
+		00C5E8BD27BB07EC009D4E25 /* dvtWeatherMob-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "dvtWeatherMob-Bridging-Header.h"; sourceTree = "<group>"; };
+		00C5E8BE27BB07ED009D4E25 /* dummyGeoFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummyGeoFile.swift; sourceTree = "<group>"; };
+		00C5E8C227BB0847009D4E25 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		00E356EE1AD99517003FC87E /* dvtWeatherMobTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dvtWeatherMobTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* dvtWeatherMobTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = dvtWeatherMobTests.m; sourceTree = "<group>"; };
@@ -76,6 +81,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00C5E8BA27BAF4CD009D4E25 /* libReactNativeConfig.a in Frameworks */,
+				00C5E8C327BB0847009D4E25 /* MapKit.framework in Frameworks */,
 				636C8060A285AA7F385A8F41 /* libPods-dvtWeatherMob.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,6 +142,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				00C5E8C227BB0847009D4E25 /* MapKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				A5706661E25B85AC3378D46A /* libPods-dvtWeatherMob.a */,
 				BEB1C1A8F90A4CAB8D3A0C0A /* libPods-dvtWeatherMob-dvtWeatherMobTests.a */,
@@ -154,12 +161,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				00C5E8BE27BB07ED009D4E25 /* dummyGeoFile.swift */,
 				13B07FAE1A68108700A75B9A /* dvtWeatherMob */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* dvtWeatherMobTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				285160F65103BAA6C2AA0DC2 /* Pods */,
+				00C5E8BD27BB07EC009D4E25 /* dvtWeatherMob-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -234,7 +243,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1320;
 					};
 				};
 			};
@@ -460,6 +469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00C5E8BF27BB07ED009D4E25 /* dummyGeoFile.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -480,6 +490,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 17923D4EEB42D00CC7B4D519 /* Pods-dvtWeatherMob-dvtWeatherMobTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -507,6 +518,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9F459EF0FFA938C73B7D972C /* Pods-dvtWeatherMob-dvtWeatherMobTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = dvtWeatherMobTests/Info.plist;
@@ -588,6 +600,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = dvtWeatherMob;
+				SWIFT_OBJC_BRIDGING_HEADER = "dvtWeatherMob-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -654,6 +667,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = dvtWeatherMob;
+				SWIFT_OBJC_BRIDGING_HEADER = "dvtWeatherMob-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
