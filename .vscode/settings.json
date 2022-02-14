@@ -1,0 +1,12 @@
+{
+  "workbench.colorTheme": "Default Dark+",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.detectIndentation": false,
+  "editor.minimap.enabled": false,
+  "editor.hover.above": false,
+  "editor.hover.delay": 1500,
+  "editor.tabSize": 2,
+  "eslint.validate": ["javascript"]
+}
