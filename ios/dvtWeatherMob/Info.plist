@@ -73,5 +73,18 @@
   <value>Your location is required to get local weather</value>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
   <value>Your location is required to get local weather</value>
+  <key>NSAppTransportSecurity</key>
+  <key>NSAllowsArbitraryLoads</key>
+  <false/>
+  <key>NSExceptionDomains</key>
+  <dict>
+    <key>openweathermap.org</key>
+    <dict>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+    </dict>
+  </dict>
 </dict>
 </plist>
