@@ -8,5 +8,8 @@
   "editor.hover.above": false,
   "editor.hover.delay": 1500,
   "editor.tabSize": 2,
-  "eslint.validate": ["javascript"]
+  "eslint.validate": [
+    "javascript"
+  ],
+  "editor.fontSize": 13
 }
