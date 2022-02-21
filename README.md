@@ -18,3 +18,4 @@ yarn android
 ### Issues
 
 - Unresolved issues for iOS (mostly due to developing on M1 mac)
+- iOS app not running on M1. Yet to test on Intel based Mac.
