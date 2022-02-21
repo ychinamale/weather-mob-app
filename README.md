@@ -1,6 +1,6 @@
 ## Weather App (React Native)
 <br>
-This is a basic weather app written in TypeScript (React Native).
+This is a basic weather app written in JavaScript (React Native).
 <br><br>
 
 
