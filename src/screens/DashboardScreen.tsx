@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  ImageBackground,
-  PermissionsAndroid, PermissionStatus, Permission,
-  Platform, SafeAreaView, Text, useWindowDimensions, View, ScrollView, Image, StyleSheet,
+  ActivityIndicator, ImageBackground,
+  PermissionsAndroid, PermissionStatus, Permission, Platform,
+  RefreshControl, SafeAreaView, StyleSheet, Text, View, ScrollView, Image,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Geolocation from 'react-native-geolocation-service';
 import dayjs from 'dayjs';
-import { tWeatherData } from 'src/constants/entities';
+import { tWeatherSummary } from 'src/constants/entities';
 import { backgrounds, icons } from 'src/constants/images';
 import { fetchCurrentWeather, fetchForecast } from 'src/services/apiCalls';
 import colors from 'src/constants/colors';
@@ -24,7 +24,7 @@ const locationPermissons = [
 
 async function getLocationPermission() {
   if (Platform.OS === 'ios') {
-    // handle later for ios
+    // TODO: Resolve M1 issues and handle for iOS
     return false;
   }
   try {
@@ -73,10 +73,7 @@ function getWeatherDescKey(description:string) {
     return 'cloudy'
   } else if (description?.toLowerCase()?.includes('rain')) {
     return 'rainy'
-  } // else if (description.toLowerCase().includes('sun') || description.toLowerCase().includes('clear')) { 
-    // return 'sunny'
-  // } 
-  else {
+  } else {
     return 'sunny'
   }
 }
@@ -138,8 +135,40 @@ function getForecastSummary(forecast) {
 
 
 function DashboardScreen() {
-  const [weather, setWeather] = React.useState<tWeatherData>();
-  const { width: screenWidth } = useWindowDimensions();
+  // const [weather, setWeather] = React.useState<tWeatherData>();
+  const [currentWeather, setCurrentWeather] = React.useState<tWeatherSummary>()
+  const [forecastWeather, setForecastWeather] = React.useState<tWeatherSummary[]>()
+  const [location, setLocation] = React.useState({ lat: 0, lon: 0 })
+  const [refreshing, setRefreshing] = React.useState(false)
+
+  async function initCurrentWeather() {
+    // get weather at current position
+    const { lat, lon } = location;
+    const weatherData = await fetchCurrentWeather(lat, lon);
+    const weatherSummary = getCurrentSummary(weatherData);
+    setCurrentWeather(weatherSummary);
+  }
+  
+  async function initForecastWeather() {
+    // get weather forecast
+    const { lat, lon } = location;
+    const forecastData = await fetchForecast(lat, lon);
+    const forecastSummary = getForecastSummary(forecastData.list);
+    setForecastWeather(forecastSummary);
+  }
+
+  async function initLocation() {
+    //get location
+    const latLon  = await getLatLonPromise();
+    setLocation(latLon);
+  }
+
+  async function handleRefresh() {
+    setRefreshing(true)
+    await initCurrentWeather()
+    await initForecastWeather()
+    setRefreshing(false)
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -149,21 +178,9 @@ function DashboardScreen() {
         if (hasLocationPermissions) {
 
           try {
-            // get latitude & longitude of current position
-            const { lat, lon } = await getLatLonPromise();
-
-            // get weather at current position
-            const weatherData = await fetchCurrentWeather(lat, lon);
-            const weatherSummary = getCurrentSummary(weatherData);
-
-            // get weather forecast
-            const forecastData = await fetchForecast(lat, lon);
-            const forecastSummary = getForecastSummary(forecastData.list);
-
-            setWeather({
-              current: weatherSummary,
-              forecast: forecastSummary,
-            })
+            initLocation();
+            initCurrentWeather();
+            initForecastWeather();
 
           } catch (err) {
             console.log(`[Error] getCurrentWeather \n${err}\n`)
@@ -178,18 +195,24 @@ function DashboardScreen() {
     }, []),
   );
 
-  const weatherDesc = weather?.current?.desc[0].toLowerCase()
+  const weatherDesc = currentWeather?.desc[0].toLowerCase()
 
   return (
     <SafeAreaView style={s.layout}>
       <ScrollView
         contentContainerStyle={s.container}
-        style={{ backgroundColor: colors[getWeatherDescKey(weatherDesc) || 'cloudy']}}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+          />
+        }
+        style={{ backgroundColor: colors[getWeatherDescKey(weatherDesc)]}}
       >
         {
-          !weather?.current?.desc
-          ? <View style={s.headerBackdrop}>
-              <Text>Loading current</Text>
+          !currentWeather?.desc
+          ? <View style={[s.headerBackdrop, s.center]}>
+              <ActivityIndicator size='large' />
           </View>
           : <>
             <ImageBackground
@@ -198,30 +221,30 @@ function DashboardScreen() {
               resizeMode='cover'
             >
               <View style={s.headerArea}>
-                <Text style={[ s.text, s.h1 ]}>{weather?.current?.temp}&deg;</Text>
+                <Text style={[ s.text, s.h1 ]}>{currentWeather?.temp}&deg;</Text>
                 <Text style={[ s.text, s.h2 ]}>{weatherDesc?.toUpperCase()}</Text>
               </View>
             </ImageBackground>
             <View style={[s.weatherRow, s.topMargin ]}>
               <View style={s.detailSection}>
-                <Text style={[ s.text, s.h3 ]}>{weather?.current?.min}&deg;</Text>
+                <Text style={[ s.text, s.h3 ]}>{currentWeather?.min}&deg;</Text>
                 <Text style={[ s.text, s.h4 ]}>min</Text>
               </View>
               <View style={[s.detailSection, s.center ]}>
-                <Text style={[ s.text, s.h3 ]}>{weather?.current?.temp}&deg;</Text>
+                <Text style={[ s.text, s.h3 ]}>{currentWeather?.temp}&deg;</Text>
                 <Text style={[ s.text, s.h4 ]}>Current</Text>
               </View>
               <View style={[s.detailSection, s.sendToEnd]}>
-                <Text style={[ s.text, s.h3 ]}>{weather?.current?.max}&deg;</Text>
+                <Text style={[ s.text, s.h3 ]}>{currentWeather?.max}&deg;</Text>
                 <Text style={[ s.text, s.h4 ]}>max</Text>
               </View>
             </View>
           </>
         }
         <View style={[ s.separator, s.topMargin, s.bottomMargin ]} />
-        { weather?.forecast?.length > 0
+        { forecastWeather?.length > 0
           ? <>
-            { weather?.forecast.map((entry) => (
+            { forecastWeather?.map((entry) => (
               <View key={entry.date} style={s.weatherRow}>
                 <View style={s.detailSection}>
                   <Text style={[ s.text, s.h3 ]}>{entry.day}</Text>
@@ -239,9 +262,9 @@ function DashboardScreen() {
               </View>
             ))}
           </>
-          : <View>
-              <Text>Loading forecast ...</Text>
-            </View>
+          : <View style={[s.headerBackdrop, s.center]}>
+              <ActivityIndicator size='large' />
+          </View>
         }
       </ScrollView>
     </SafeAreaView>
